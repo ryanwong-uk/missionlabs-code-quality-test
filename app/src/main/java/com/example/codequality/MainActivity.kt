@@ -5,18 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.example.codequality.ui.theme.CodeQualityTheme
@@ -29,12 +27,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     var showAnswer by remember { mutableStateOf(false) }
                     var input: String by remember { mutableStateOf("") }
-                    val multiples = mutableListOf<Int>()
-                    val sum = SumMultiples().sumMultiplesOfThreeAndFive(
-                        upperBound = if (input.isBlank()) 0 else input.toInt(),
-                        multiplesToBeSummed = multiples
-                    )
-
+                    var sum by remember { mutableStateOf(0) }
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
@@ -49,6 +42,7 @@ class MainActivity : ComponentActivity() {
                         )
                         OutlinedTextField(
                             value = input,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier.padding(bottom = 16.dp),
                             label = { Text("Enter an upper bound") },
                             onValueChange = {
@@ -60,13 +54,18 @@ class MainActivity : ComponentActivity() {
                         )
                         Button(
                             modifier = Modifier.padding(bottom = 16.dp),
-                            onClick = { showAnswer = true }
+                            onClick = {
+                                sum = SumMultiplesImproved().sumMultiplesOfThreeAndFive(
+                                    upperBound = if (input.isBlank()) 0 else input.toInt()
+                                )
+                                showAnswer = true
+                            }
                         ) {
-                            Text("Show Solution")
+                            Text(getString(R.string.show_solution))
                         }
 
                         if (showAnswer) {
-                            Text("The answer is: $sum")
+                            Text(getString(R.string.the_answer_is, sum))
                         }
                     }
                 }
