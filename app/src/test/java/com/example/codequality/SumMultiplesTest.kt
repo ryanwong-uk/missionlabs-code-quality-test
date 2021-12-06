@@ -22,4 +22,12 @@ class SumMultiplesTest {
         SumMultiples().sumMultiplesOfThreeAndFive("10.0", mutableListOf()) shouldNotBe 0
         SumMultiples().sumMultiplesOfThreeAndFive("??", mutableListOf()) shouldBe 0
     }
+
+    @Test
+    fun sumMultiples_GetsTheRightAnswerFor1000() {
+        // Try to calculate the sum of all the multiples of 3 or 5 for the range 1 until 1000
+        // The expected answer is 233168
+        val multiplesToBeSummed = mutableListOf<Int>()
+        SumMultiples().sumMultiplesOfThreeAndFive(1000, multiplesToBeSummed) shouldBe 233168
+    }
 }

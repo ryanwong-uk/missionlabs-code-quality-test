@@ -1,5 +1,7 @@
 package com.example.codequality
 
+import java.text.NumberFormat
+
 class SumMultiples {
     /*
      * ***********************************************************************************************************************************
@@ -22,9 +24,11 @@ class SumMultiples {
     // Handle the case that the input is a string
     fun sumMultiplesOfThreeAndFive(upperBound: String, multiplesToBeSummed: MutableList<Int>): Int {
         return try {
-            val numbers = IntRange(1, upperBound.size - 1).toList()
-            doCalculation(numbers, multiplesToBeSummed)
-        } catch (ex: Exception) {
+            (NumberFormat.getInstance().parse(upperBound))?.let { upperBoundNumeric ->
+                sumMultiplesOfThreeAndFive(upperBoundNumeric.toInt(), multiplesToBeSummed)
+            } ?: 0
+        } catch (ex: java.text.ParseException) {
+            ex.printStackTrace()
             0
         }
     }
@@ -34,10 +38,9 @@ class SumMultiples {
         // is divisible by 3 or 5, we will update sum. At the end of all this we return
         // that sum to solve the problem above
         for (n in numbers) {
-            if ( n isDivisibleBy 3 ) {
+            if (n isDivisibleBy 3) {
                 multiplesToBeSummed.accumulate(n)
-            }
-            if ( n isDivisibleBy 5 ) {
+            } else if (n isDivisibleBy 5) {
                 multiplesToBeSummed.accumulate(n)
             }
         }
@@ -45,7 +48,6 @@ class SumMultiples {
         return multiplesToBeSummed.sum()
     }
 }
-
 
 
 // Helpers
